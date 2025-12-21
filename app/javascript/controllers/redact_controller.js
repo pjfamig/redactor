@@ -107,6 +107,44 @@ export default class extends Controller {
     this.inputTarget.focus()
   }
 
+  loadExample(event) {
+    event.preventDefault()
+    const exampleNum = event.currentTarget.dataset.example
+    const examples = {
+      "1": `Hi John Smith,
+
+I wanted to follow up on our conversation about the project. Please contact me at john.smith@example.com or call me at (555) 123-4567.
+
+Best regards,
+Sarah Johnson
+Acme Corporation Inc.
+sarah.johnson@acme.com`,
+      "2": `Patient Information:
+Name: Dr. Michael Williams
+SSN: 123-45-6789
+Phone: 555-987-6543
+Address: 123 Main Street, Suite 100, New York, NY 10001
+
+Medical records for review. Please contact the patient at m.williams@hospital.com.`,
+      "3": `Technical Report - Server Configuration
+
+The production server at 192.168.1.100 is accessible via https://api.example.com/v1/status.
+Contact the DevOps team at devops@techcorp.com or visit https://techcorp.com/support.
+
+Company: TechCorp Solutions LLC
+IP Range: 10.0.0.1 to 10.0.0.255
+Support: support@techcorp.com`
+    }
+
+    const exampleText = examples[exampleNum]
+    if (exampleText) {
+      this.inputTarget.value = exampleText
+      this.inputTarget.focus()
+      // Trigger the input event to start redaction
+      this.onInput()
+    }
+  }
+
   async copy() {
     const text = this.outputTarget.value || ""
     if (!text.trim()) return
@@ -224,7 +262,20 @@ export default class extends Controller {
   }
 
   setStatus(text, kind) {
-    this.statusPillTarget.textContent = text
+    // Preserve the dot indicator span
+    const dot = this.statusPillTarget.querySelector('span')
+    if (dot) {
+      // Remove all text nodes but keep the span
+      Array.from(this.statusPillTarget.childNodes).forEach(node => {
+        if (node.nodeType === Node.TEXT_NODE) {
+          node.remove()
+        }
+      })
+      // Add the new text after the span
+      this.statusPillTarget.appendChild(document.createTextNode(` ${text}`))
+    } else {
+      this.statusPillTarget.textContent = text
+    }
     this.statusPillTarget.dataset.kind = kind
   }
 

@@ -8,16 +8,101 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
- mark.pii {
-    @apply rounded px-0.5 bg-yellow-200;
-  }
-  
-  mark.pii-email       { @apply bg-pink-200; }
-  mark.pii-phone       { @apply bg-blue-200; }
-  mark.pii-url         { @apply bg-emerald-200; }
-  mark.pii-ip          { @apply bg-purple-200; }
-  mark.pii-ssn         { @apply bg-red-200; }
-  mark.pii-credit_card { @apply bg-orange-200; }
-  mark.pii-address     { @apply bg-yellow-300; }
-  mark.pii-custom      { @apply bg-green-200; }
-  
+
+/* PII Highlighting */
+mark.pii {
+  @apply rounded px-0.5 py-0.5 font-medium;
+}
+
+mark.pii-email       { @apply bg-pink-200 text-pink-900; }
+mark.pii-phone       { @apply bg-blue-200 text-blue-900; }
+mark.pii-url         { @apply bg-emerald-200 text-emerald-900; }
+mark.pii-ip          { @apply bg-purple-200 text-purple-900; }
+mark.pii-ssn         { @apply bg-red-200 text-red-900; }
+mark.pii-credit_card { @apply bg-orange-200 text-orange-900; }
+mark.pii-address     { @apply bg-yellow-300 text-yellow-900; }
+mark.pii-custom      { @apply bg-green-200 text-green-900; }
+
+/* Status Pill States */
+[data-redact-target="statusPill"][data-kind="idle"] {
+  @apply border-gray-300 bg-gray-50 text-gray-700;
+}
+
+[data-redact-target="statusPill"][data-kind="busy"] {
+  @apply border-amber-300 bg-amber-50 text-amber-700;
+}
+
+[data-redact-target="statusPill"][data-kind="busy"] span {
+  @apply bg-amber-500 animate-pulse;
+}
+
+[data-redact-target="statusPill"][data-kind="ok"] {
+  @apply border-emerald-300 bg-emerald-50 text-emerald-700;
+}
+
+[data-redact-target="statusPill"][data-kind="ok"] span {
+  @apply bg-emerald-500;
+}
+
+[data-redact-target="statusPill"][data-kind="err"] {
+  @apply border-red-300 bg-red-50 text-red-700;
+}
+
+[data-redact-target="statusPill"][data-kind="err"] span {
+  @apply bg-red-500;
+}
+
+/* Findings Display */
+[data-redact-target="findings"] .empty {
+  @apply text-gray-400 italic;
+}
+
+[data-redact-target="findings"] .finding-groups {
+  @apply flex flex-wrap gap-2 mb-3;
+}
+
+[data-redact-target="findings"] .finding {
+  @apply flex items-center gap-2;
+}
+
+[data-redact-target="findings"] .badge {
+  @apply inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold;
+}
+
+[data-redact-target="findings"] .badge-email       { @apply bg-pink-100 text-pink-800; }
+[data-redact-target="findings"] .badge-phone       { @apply bg-blue-100 text-blue-800; }
+[data-redact-target="findings"] .badge-url          { @apply bg-emerald-100 text-emerald-800; }
+[data-redact-target="findings"] .badge-ip           { @apply bg-purple-100 text-purple-800; }
+[data-redact-target="findings"] .badge-ssn          { @apply bg-red-100 text-red-800; }
+[data-redact-target="findings"] .badge-credit_card   { @apply bg-orange-100 text-orange-800; }
+[data-redact-target="findings"] .badge-address       { @apply bg-yellow-100 text-yellow-800; }
+[data-redact-target="findings"] .badge-custom        { @apply bg-green-100 text-green-800; }
+[data-redact-target="findings"] .badge-unknown       { @apply bg-gray-100 text-gray-800; }
+
+[data-redact-target="findings"] .count {
+  @apply text-xs font-medium text-gray-600;
+}
+
+[data-redact-target="findings"] .finding-items {
+  @apply space-y-2 border-t border-gray-200 pt-3 mt-3;
+}
+
+[data-redact-target="findings"] .item {
+  @apply flex items-center gap-2 text-xs;
+}
+
+[data-redact-target="findings"] .preview {
+  @apply rounded bg-gray-100 px-1.5 py-0.5 font-mono text-gray-700;
+}
+
+[data-redact-target="findings"] .arrow {
+  @apply text-gray-400;
+}
+
+[data-redact-target="findings"] .ph {
+  @apply rounded bg-gray-200 px-1.5 py-0.5 font-mono text-gray-700;
+}
+
+[data-redact-target="findings"] .more {
+  @apply text-xs text-gray-500 italic pt-2;
+}
