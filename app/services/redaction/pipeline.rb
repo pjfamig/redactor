@@ -23,6 +23,7 @@ module Redaction
       spans = []
       spans += Detectors::Regex.call(@text)
       spans += Detectors::Dictionary.call(@text, @dictionary) if @dictionary.any?
+      spans += Detectors::Names.call(@text)
 
       spans = SpanTools.merge_and_resolve(@text, spans, PRIORITY)
       mapping, redacted = Replacer.apply(@text, spans)

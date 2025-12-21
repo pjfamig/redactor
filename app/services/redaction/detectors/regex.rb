@@ -13,9 +13,17 @@ module Redaction
           (?!\w)
         /x
   
-        # very naive; keep as “maybe address”
-        ADDRESS = /\b\d{1,6}\s+[A-Za-z0-9.\-]+\s+(?:St|Street|Ave|Avenue|Blvd|Boulevard|Rd|Road|Ln|Lane|Dr|Drive|Ct|Court)\b/i
-  
+        ADDRESS = /
+        \b\d{1,6}\s+[A-Za-z0-9.\- ]+\s+
+        (?:St|Street|Ave|Avenue|Blvd|Boulevard|Rd|Road|Ln|Lane|Dr|Drive|Ct|Court)\b
+        (?:,\s*(?:Suite|Ste|Unit|\#)\s*[A-Za-z0-9\-]+)?
+        (?:,\s*[A-Za-z.\- ]+)?
+        (?:,\s*[A-Z]{2})?
+        (?:\s+\d{5}(?:-\d{4})?)?
+        \b
+      /x      
+      
+      
         CC_CANDIDATE = /\b(?:\d[ -]*?){13,19}\b/
   
         def self.call(text)
