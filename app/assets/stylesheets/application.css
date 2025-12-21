@@ -1,0 +1,23 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+ mark.pii {
+    @apply rounded px-0.5 bg-yellow-200;
+  }
+  
+  mark.pii-email       { @apply bg-pink-200; }
+  mark.pii-phone       { @apply bg-blue-200; }
+  mark.pii-url         { @apply bg-emerald-200; }
+  mark.pii-ip          { @apply bg-purple-200; }
+  mark.pii-ssn         { @apply bg-red-200; }
+  mark.pii-credit_card { @apply bg-orange-200; }
+  mark.pii-address     { @apply bg-yellow-300; }
+  mark.pii-custom      { @apply bg-green-200; }
+  
