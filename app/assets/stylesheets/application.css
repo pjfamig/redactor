@@ -9,52 +9,75 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
-/* PII Highlighting */
-mark.pii {
-  @apply rounded px-0.5 py-0.5 font-medium;
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-mark.pii-email       { @apply bg-pink-200 text-pink-900; }
-mark.pii-phone       { @apply bg-blue-200 text-blue-900; }
-mark.pii-url         { @apply bg-emerald-200 text-emerald-900; }
-mark.pii-ip          { @apply bg-purple-200 text-purple-900; }
-mark.pii-ssn         { @apply bg-red-200 text-red-900; }
-mark.pii-credit_card { @apply bg-orange-200 text-orange-900; }
-mark.pii-address     { @apply bg-yellow-300 text-yellow-900; }
-mark.pii-custom      { @apply bg-green-200 text-green-900; }
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(71, 85, 105, 0.5);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7);
+}
+
+/* PII Highlighting */
+mark.pii {
+  @apply rounded px-1 py-0.5 font-medium;
+}
+
+mark.pii-email       { @apply bg-pink-500/25 text-pink-200 border border-pink-500/40; }
+mark.pii-phone       { @apply bg-blue-500/25 text-blue-200 border border-blue-500/40; }
+mark.pii-url         { @apply bg-emerald-500/25 text-emerald-200 border border-emerald-500/40; }
+mark.pii-ip          { @apply bg-purple-500/25 text-purple-200 border border-purple-500/40; }
+mark.pii-ssn         { @apply bg-red-500/25 text-red-200 border border-red-500/40; }
+mark.pii-credit_card { @apply bg-orange-500/25 text-orange-200 border border-orange-500/40; }
+mark.pii-address     { @apply bg-yellow-500/25 text-yellow-200 border border-yellow-500/40; }
+mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green-500/40; }
 
 /* Status Pill States */
 [data-redact-target="statusPill"][data-kind="idle"] {
-  @apply border-gray-300 bg-gray-50 text-gray-700;
+  @apply border-slate-600 bg-slate-800/50 text-slate-400;
+}
+
+[data-redact-target="statusPill"][data-kind="idle"] span {
+  @apply bg-slate-500;
 }
 
 [data-redact-target="statusPill"][data-kind="busy"] {
-  @apply border-amber-300 bg-amber-50 text-amber-700;
+  @apply border-amber-500/50 bg-amber-500/10 text-amber-300;
 }
 
 [data-redact-target="statusPill"][data-kind="busy"] span {
-  @apply bg-amber-500 animate-pulse;
+  @apply bg-amber-400 animate-pulse;
 }
 
 [data-redact-target="statusPill"][data-kind="ok"] {
-  @apply border-emerald-300 bg-emerald-50 text-emerald-700;
+  @apply border-green-500/50 bg-green-500/10 text-green-300;
 }
 
 [data-redact-target="statusPill"][data-kind="ok"] span {
-  @apply bg-emerald-500;
+  @apply bg-green-400;
 }
 
 [data-redact-target="statusPill"][data-kind="err"] {
-  @apply border-red-300 bg-red-50 text-red-700;
+  @apply border-red-500/50 bg-red-500/10 text-red-300;
 }
 
 [data-redact-target="statusPill"][data-kind="err"] span {
-  @apply bg-red-500;
+  @apply bg-red-400;
 }
 
 /* Findings Display */
 [data-redact-target="findings"] .empty {
-  @apply text-gray-400 italic;
+  @apply text-slate-400 italic;
 }
 
 [data-redact-target="findings"] .finding-groups {
@@ -66,25 +89,25 @@ mark.pii-custom      { @apply bg-green-200 text-green-900; }
 }
 
 [data-redact-target="findings"] .badge {
-  @apply inline-flex items-center rounded-md px-2 py-0.5 text-xs font-semibold;
+  @apply inline-flex items-center px-2 py-0.5 text-xs font-medium border rounded;
 }
 
-[data-redact-target="findings"] .badge-email       { @apply bg-pink-100 text-pink-800; }
-[data-redact-target="findings"] .badge-phone       { @apply bg-blue-100 text-blue-800; }
-[data-redact-target="findings"] .badge-url          { @apply bg-emerald-100 text-emerald-800; }
-[data-redact-target="findings"] .badge-ip           { @apply bg-purple-100 text-purple-800; }
-[data-redact-target="findings"] .badge-ssn          { @apply bg-red-100 text-red-800; }
-[data-redact-target="findings"] .badge-credit_card   { @apply bg-orange-100 text-orange-800; }
-[data-redact-target="findings"] .badge-address       { @apply bg-yellow-100 text-yellow-800; }
-[data-redact-target="findings"] .badge-custom        { @apply bg-green-100 text-green-800; }
-[data-redact-target="findings"] .badge-unknown       { @apply bg-gray-100 text-gray-800; }
+[data-redact-target="findings"] .badge-email       { @apply bg-pink-500/20 text-pink-200 border-pink-500/40; }
+[data-redact-target="findings"] .badge-phone       { @apply bg-blue-500/20 text-blue-200 border-blue-500/40; }
+[data-redact-target="findings"] .badge-url          { @apply bg-emerald-500/20 text-emerald-200 border-emerald-500/40; }
+[data-redact-target="findings"] .badge-ip           { @apply bg-purple-500/20 text-purple-200 border-purple-500/40; }
+[data-redact-target="findings"] .badge-ssn          { @apply bg-red-500/20 text-red-200 border-red-500/40; }
+[data-redact-target="findings"] .badge-credit_card   { @apply bg-orange-500/20 text-orange-200 border-orange-500/40; }
+[data-redact-target="findings"] .badge-address       { @apply bg-yellow-500/20 text-yellow-200 border-yellow-500/40; }
+[data-redact-target="findings"] .badge-custom        { @apply bg-green-500/20 text-green-200 border-green-500/40; }
+[data-redact-target="findings"] .badge-unknown       { @apply bg-slate-500/20 text-slate-300 border-slate-500/40; }
 
 [data-redact-target="findings"] .count {
-  @apply text-xs font-medium text-gray-600;
+  @apply text-xs font-medium text-slate-300;
 }
 
 [data-redact-target="findings"] .finding-items {
-  @apply space-y-2 border-t border-gray-200 pt-3 mt-3;
+  @apply space-y-2 border-t border-slate-700 pt-3 mt-3;
 }
 
 [data-redact-target="findings"] .item {
@@ -92,17 +115,17 @@ mark.pii-custom      { @apply bg-green-200 text-green-900; }
 }
 
 [data-redact-target="findings"] .preview {
-  @apply rounded bg-gray-100 px-1.5 py-0.5 font-mono text-gray-700;
+  @apply bg-slate-800/50 border border-slate-600 rounded px-1.5 py-0.5 font-mono text-slate-200 text-xs;
 }
 
 [data-redact-target="findings"] .arrow {
-  @apply text-gray-400;
+  @apply text-slate-400;
 }
 
 [data-redact-target="findings"] .ph {
-  @apply rounded bg-gray-200 px-1.5 py-0.5 font-mono text-gray-700;
+  @apply bg-slate-800/50 border border-slate-600 rounded px-1.5 py-0.5 font-mono text-slate-200 text-xs;
 }
 
 [data-redact-target="findings"] .more {
-  @apply text-xs text-gray-500 italic pt-2;
+  @apply text-xs text-slate-400 italic pt-2;
 }

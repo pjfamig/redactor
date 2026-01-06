@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html class="h-full">
   <head>
     <title><%= content_for(:title) || "Redactor" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -22,9 +22,9 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto flex">
+  <body class="h-full bg-slate-950 text-slate-100 antialiased">
+    <div class="min-h-full">
       <%= yield %>
-    </main>
+    </div>
   </body>
 </html>

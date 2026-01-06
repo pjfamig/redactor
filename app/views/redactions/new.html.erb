@@ -1,63 +1,79 @@
 <div
-  class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8"
+  class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8"
   data-controller="redact"
 >
   <!-- Header -->
-  <header class="mb-8">
-    <h1 class="text-center text-2xl font-semibold text-gray-900 sm:text-3xl">
-      Prompt Redactor
-    </h1>
-    <p class="mt-2 text-center text-sm-2 text-gray-600">
-      Paste text on the left. The redacted version updates automatically. Nothing is stored.
-    </p>
-    <p class="mt-2 text-center text-sm-2 text-gray-600">
-      Try
-      <a href="#" class="text-blue-600 hover:text-blue-800 underline" data-action="redact#loadExample" data-example="1">Example 1</a>,
-      <a href="#" class="text-blue-600 hover:text-blue-800 underline" data-action="redact#loadExample" data-example="2">Example 2</a>,
-      <a href="#" class="text-blue-600 hover:text-blue-800 underline" data-action="redact#loadExample" data-example="3">Example 3</a>
-    </p>
+  <header class="mb-8 border-b border-slate-700 pb-6">
+    <div class="text-center">
+      <div class="mb-4 hidden sm:block">
+        <pre class="text-slate-300 text-xs sm:text-sm leading-tight overflow-x-auto font-mono">
+╔═══════════════════════════════════════════════════════════╗
+║                                                           ║
+║        ██████╗ ███████╗██████╗  █████╗  ██████╗████████╗ ║
+║        ██╔══██╗██╔════╝██╔══██╗██╔══██╗██╔════╝╚══██╔══╝ ║
+║        ██████╔╝█████╗  ██║  ██║███████║██║        ██║    ║
+║        ██╔══██╗██╔══╝  ██║  ██║██╔══██║██║        ██║    ║
+║        ██║  ██║███████╗██████╔╝██║  ██║╚██████╗   ██║    ║
+║        ╚═╝  ╚═╝╚══════╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝   ╚═╝    ║
+║                                                           ║
+╚═══════════════════════════════════════════════════════════╝
+        </pre>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-semibold text-slate-100 mb-3">
+        PII Redactor
+      </h1>
+      <p class="text-slate-300 text-base sm:text-lg mb-2">
+        Automatically redact sensitive data from text before sending to LLMs
+      </p>
+      <p class="text-slate-400 text-sm mb-4">
+        Privacy-first: Nothing is stored • Real-time processing • Zero configuration
+      </p>
+      <div class="flex flex-wrap justify-center gap-2 text-sm">
+        <span class="text-slate-500">Try examples:</span>
+        <a href="#" class="text-blue-400 hover:text-blue-300 hover:underline transition-colors" data-action="redact#loadExample" data-example="1">Example 1</a>
+        <span class="text-slate-600">•</span>
+        <a href="#" class="text-blue-400 hover:text-blue-300 hover:underline transition-colors" data-action="redact#loadExample" data-example="2">Example 2</a>
+        <span class="text-slate-600">•</span>
+        <a href="#" class="text-blue-400 hover:text-blue-300 hover:underline transition-colors" data-action="redact#loadExample" data-example="3">Example 3</a>
+      </div>
+    </div>
+  </header>
 
-    <!-- Tips (collapsible) -->
-    <details class="mt-4">
-      <summary class="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
-        Tips
+  <!-- Dictionary Section -->
+  <section class="mb-6 border border-slate-700 bg-slate-900/50 rounded-lg p-4">
+    <details class="group">
+      <summary class="cursor-pointer text-slate-200 text-sm font-medium hover:text-slate-100 transition-colors list-none">
+        <span class="inline-block mr-2 text-slate-400">▶</span>
+        Custom Dictionary (optional)
       </summary>
-      <ul class="mt-2 space-y-1 text-sm text-gray-600 list-disc pl-5">
-        <li>Use the dictionary to force-redact client names or internal terms.</li>
-        <li>Highlights show what will be replaced with placeholders.</li>
-      </ul>
-    </details>
-
-    <!-- Dictionary (collapsible) -->
-    <details class="mt-4">
-      <summary class="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900">
-        Dictionary (optional)
-      </summary>
-      <div class="mt-2">
+      <div class="mt-3 pt-3 border-t border-slate-700">
         <input
           type="text"
-          class="w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm text-gray-900 placeholder:text-gray-400 focus:border-gray-300 focus:outline-none focus:ring-0"
+          class="w-full bg-slate-800/50 border border-slate-600 rounded px-3 py-2 text-sm text-slate-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500/50 transition-colors"
           placeholder="Comma-separated terms (e.g., client names, codenames)"
           data-redact-target="dictionary"
         />
+        <p class="mt-2 text-xs text-slate-400">
+          Force-redact specific terms that aren't automatically detected
+        </p>
       </div>
     </details>
-  </header>
+  </section>
 
   <!-- Controls -->
-  <section class="mb-6 rounded-xl border border-gray-200 bg-gradient-to-br from-gray-50 to-white p-5 shadow-sm">
+  <section class="mb-6 border border-slate-700 bg-slate-900/50 rounded-lg p-4">
     <div class="flex flex-wrap items-center gap-3">
       <button
         type="button"
-        class="rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-green-700"
+        class="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors"
         data-action="redact#run"
       >
-        Redact now
+        Redact
       </button>
 
       <button
         type="button"
-        class="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition-all hover:bg-gray-50"
+        class="px-4 py-2 text-sm font-medium bg-slate-700 hover:bg-slate-600 text-slate-200 rounded transition-colors"
         data-action="redact#clear"
       >
         Clear
@@ -65,24 +81,23 @@
 
       <button
         type="button"
-        class="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-blue-600"
+        class="px-4 py-2 text-sm font-medium bg-slate-700 hover:bg-slate-600 text-slate-200 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         data-action="redact#copy"
         data-redact-target="copyBtn"
         disabled
       >
-        Copy redacted
+        Copy
       </button>
 
       <div class="ml-auto flex items-center gap-3">
         <span
-          class="inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium transition-colors"
+          class="inline-flex items-center gap-1.5 border border-slate-600 bg-slate-800/50 rounded-full px-3 py-1 text-xs font-medium text-slate-300 transition-colors"
           data-redact-target="statusPill"
           data-kind="idle"
         >
-          <span class="h-1.5 w-1.5 rounded-full bg-gray-400"></span>
-          Idle
+          <span class="h-1.5 w-1.5 rounded-full"></span>
         </span>
-        <span class="text-xs text-gray-500" data-redact-target="meta"></span>
+        <span class="text-xs text-slate-400" data-redact-target="meta"></span>
       </div>
     </div>
   </section>
@@ -90,22 +105,24 @@
   <!-- Two panes -->
   <main class="grid grid-cols-1 gap-6 lg:grid-cols-2">
     <!-- Left pane -->
-    <section class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
-      <div class="border-b border-gray-200 bg-gray-50 px-4 py-2.5">
-        <h2 class="text-xs font-semibold text-gray-700">Original (highlights)</h2>
+    <section class="flex flex-col overflow-hidden border border-slate-700 bg-slate-900/30 rounded-lg">
+      <div class="border-b border-slate-700 bg-slate-800/50 px-4 py-2.5 rounded-t-lg">
+        <h2 class="text-sm font-medium text-slate-200">
+          Original Text (with highlights)
+        </h2>
       </div>
 
-      <div class="flex flex-col">
+      <div class="flex flex-col relative">
         <textarea
-          class="h-96 w-full resize-y border-0 px-4 py-3 text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none"
-          placeholder="Paste your prompt here…"
+          class="h-96 w-full resize-y border-0 px-4 py-3 text-sm leading-relaxed bg-slate-900/50 text-slate-100 placeholder:text-slate-500 focus:ring-0 focus:outline-none focus:bg-slate-900/70 transition-colors"
+          placeholder="Paste your text here..."
           spellcheck="false"
           data-redact-target="input"
           data-action="input->redact#onInput"
         ></textarea>
 
         <pre
-          class="h-96 overflow-auto border-t border-gray-200 bg-gray-50/50 px-4 py-3 text-sm leading-relaxed"
+          class="h-96 overflow-auto border-t border-slate-700 bg-slate-900/30 px-4 py-3 text-sm leading-relaxed text-slate-200"
           data-redact-target="highlight"
           aria-label="Highlighted original preview"
         ></pre>
@@ -113,31 +130,49 @@
     </section>
 
     <!-- Right pane -->
-    <section class="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white">
-      <div class="border-b border-gray-200 bg-gray-50 px-4 py-2.5">
-        <h2 class="text-xs font-semibold text-gray-700">Redacted</h2>
+    <section class="flex flex-col overflow-hidden border border-slate-700 bg-slate-900/30 rounded-lg">
+      <div class="border-b border-slate-700 bg-slate-800/50 px-4 py-2.5 rounded-t-lg">
+        <h2 class="text-sm font-medium text-slate-200">
+          Redacted Output
+        </h2>
       </div>
 
       <textarea
-        class="h-96 w-full resize-y border-0 px-4 py-3 text-sm leading-relaxed text-gray-900 placeholder:text-gray-400 focus:ring-0 focus:outline-none bg-gray-50/50"
-        placeholder="Redacted text will appear here…"
+        class="h-96 w-full resize-y border-0 px-4 py-3 text-sm leading-relaxed bg-slate-900/50 text-slate-100 placeholder:text-slate-500 focus:ring-0 focus:outline-none"
+        placeholder="Redacted text will appear here..."
         spellcheck="false"
         readonly
         data-redact-target="output"
       ></textarea>
 
-      <div class="border-t border-gray-200 bg-white px-4 py-3">
-        <div class="mb-2 text-xs font-semibold text-gray-700">
-          Findings
+      <div class="border-t border-slate-700 bg-slate-800/30 px-4 py-3 rounded-b-lg">
+        <div class="mb-2 text-sm font-medium text-slate-200">
+          Detections
         </div>
 
         <div
           class="space-y-2 text-xs"
           data-redact-target="findings"
         >
-          <div class="text-gray-400 italic">No detections yet.</div>
+          <div class="text-slate-400 italic">No detections yet.</div>
         </div>
       </div>
     </section>
   </main>
+
+  <!-- Footer Tips -->
+  <footer class="mt-8 pt-6 border-t border-slate-700">
+    <details class="group">
+      <summary class="cursor-pointer text-slate-300 text-sm font-medium hover:text-slate-200 transition-colors list-none">
+        <span class="inline-block mr-2 text-slate-500">▶</span>
+        Usage Tips
+      </summary>
+      <ul class="mt-3 space-y-1.5 text-sm text-slate-400 pl-6 list-disc">
+        <li>Highlights show detected PII that will be replaced with placeholders</li>
+        <li>Use the dictionary to force-redact client names or internal terms</li>
+        <li>All processing happens in real-time - no data is sent to external services</li>
+        <li>Detected types: emails, phones, URLs, IPs, SSNs, credit cards, addresses, names</li>
+      </ul>
+    </details>
+  </footer>
 </div>
