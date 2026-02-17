@@ -10,7 +10,6 @@ export default class extends Controller {
   static targets = [
     "input",
     "output",
-    "highlight",
     "dictionary",
     "findings",
     "statusPill",
@@ -23,16 +22,9 @@ export default class extends Controller {
     this._timer = null
     this._lastReqId = 0
     this.setStatus("Idle", "idle")
-    this.syncHighlightScroll()
-    this.highlightTarget.textContent = ""
   }
 
   onInput() {
-    // Mirror typed text into highlight preview (no markup) until we have spans
-    if (!this.outputTarget.value) {
-      this.highlightTarget.textContent = this.inputTarget.value
-    }
-
     window.clearTimeout(this._timer)
     this._timer = window.setTimeout(() => this.run(), this.debounceMs)
   }
@@ -41,9 +33,8 @@ export default class extends Controller {
     const text = this.inputTarget.value || ""
     if (!text.trim()) {
       this.outputTarget.value = ""
-      this.highlightTarget.textContent = ""
       this.renderFindings([])
-      this.copyBtnTarget.disabled = true
+      this.setCopyButtonsDisabled(true)
       this.setStatus("Idle", "idle")
       this.metaTarget.textContent = ""
       return
@@ -79,9 +70,8 @@ export default class extends Controller {
 
       const spans = Array.isArray(data.spans) ? data.spans : []
       this.outputTarget.value = data.redacted_text || ""
-      this.copyBtnTarget.disabled = !(this.outputTarget.value || "").trim()
+      this.setCopyButtonsDisabled(!(this.outputTarget.value || "").trim())
 
-      this.renderHighlighted(text, spans)
       this.renderFindings(spans)
 
       this.setStatus("Done", "ok")
@@ -90,8 +80,6 @@ export default class extends Controller {
       if (reqId !== this._lastReqId) return
       this.setStatus("Error", "err")
       this.metaTarget.textContent = "Could not redact. Check server logs."
-      // keep best-effort preview
-      this.highlightTarget.textContent = this.inputTarget.value
     }
   }
 
@@ -99,41 +87,57 @@ export default class extends Controller {
     this.inputTarget.value = ""
     this.outputTarget.value = ""
     this.dictionaryTarget.value = ""
-    this.highlightTarget.textContent = ""
     this.renderFindings([])
-    this.copyBtnTarget.disabled = true
+    this.setCopyButtonsDisabled(true)
     this.setStatus("Idle", "idle")
     this.metaTarget.textContent = ""
     this.inputTarget.focus()
+  }
+
+  setCopyButtonsDisabled(disabled) {
+    this.copyBtnTargets.forEach((el) => { el.disabled = disabled })
   }
 
   loadExample(event) {
     event.preventDefault()
     const exampleNum = event.currentTarget.dataset.example
     const examples = {
-      "1": `Hi John Smith,
+      "1": `Hi Maria Santos,
 
-I wanted to follow up on our conversation about the project. Please contact me at john.smith@example.com or call me at (555) 123-4567.
+Quick follow-up: the contract review is ready. Reach me at maria.santos@lawfirm.com or (212) 555-0147.
 
-Best regards,
-Sarah Johnson
-Acme Corporation Inc.
-sarah.johnson@acme.com`,
-      "2": `Patient Information:
-Name: Dr. Michael Williams
-SSN: 123-45-6789
-Phone: 555-987-6543
-Address: 123 Main Street, Suite 100, New York, NY 10001
+Thanks,
+David Chen`,
+      "2": `CLINICAL NOTE - Follow-up Visit
+Date: 03/15/2025
+Patient: Robert Henderson DOB 08/22/1961
+MRN: 88492
 
-Medical records for review. Please contact the patient at m.williams@hospital.com.`,
-      "3": `Technical Report - Server Configuration
+CC: Worsening low back pain x 3 weeks, requesting prior auth for physical therapy.
 
-The production server at 192.168.1.100 is accessible via https://api.example.com/v1/status.
-Contact the DevOps team at devops@techcorp.com or visit https://techcorp.com/support.
+HPI: Mr. Henderson is a 63 yo M with h/o lumbar DDD, s/p L4-L5 fusion 2019. He reports increased pain since shoveling snow in January. Currently on cyclobenzaprine 10 mg at bedtime and naproxen 500 mg BID. Denies bowel/bladder changes, fever, or leg weakness. Pain 6/10, worse with prolonged sitting.
 
-Company: TechCorp Solutions LLC
-IP Range: 10.0.0.1 to 10.0.0.255
-Support: support@techcorp.com`
+Meds: Lisinopril 10 mg daily, metformin 500 mg BID, atorvastatin 20 mg qHS, cyclobenzaprine 10 mg qHS, naproxen 500 mg BID prn.
+
+A/P: Lumbar radiculopathy, stable. Continue current meds. Order PT x 6 weeks. Will submit prior auth to Aetna. Patient to call (617) 555-8821 if no approval in 2 weeks. F/U in 6 weeks.
+
+Dr. Patricia Wong
+Boston Spine Associates
+pwong@bostonspine.org`,
+      "3": `INSURANCE APPEAL - Prior Authorization Denial
+Member: Jennifer Martinez
+DOB: 04/11/1978
+Member ID: AET-772-4491
+Group: 8842
+Denial date: 02/28/2025
+Service: Continuous glucose monitoring (CGM), Dexcom G7
+
+CLINICAL SUMMARY:
+Ms. Martinez has Type 1 diabetes (ICD-10 E10.65), diagnosed age 12. She has had multiple episodes of severe hypoglycemia requiring ER visits (last 11/2024 at Metro General). Current regimen: insulin pump (Tandem t:slim), Humalog U-100 per pump settings, CGM previously approved through 01/2025. A1c at last visit (02/10/2025) was 7.2%. She works overnight shifts as an RN at St. Mary's Hospital and cannot reliably feel lows; her endocrinologist Dr. Rajiv Mehta (NPI 1123456789) has documented that CGM is medically necessary to prevent dangerous hypoglycemia during sleep and work.
+
+Prior auth was denied 02/28/2025 citing "insufficient documentation of hypoglycemia unawareness." We are submitting this appeal with attached chart notes from Dr. Mehta (visit 02/10/2025), hypoglycemia log (Oct 2024–Jan 2025), and ER discharge summary from Metro General (11/18/2024). Patient's pharmacy: CVS #4821, 1400 Oak Street, Boston MA 02115. Contact: j.martinez.patient@email.com, (857) 555-3302.
+
+REQUEST: Overturn denial and approve CGM (Dexcom G7) for 12 months. Without CGM this patient is at significant risk for severe hypoglycemia, seizure, and death.`
     }
 
     const exampleText = examples[exampleNum]
@@ -154,7 +158,7 @@ Support: support@techcorp.com`
       this.setStatus("Copied", "ok")
       window.setTimeout(() => {
         // only revert if nothing else is running
-        if (this.statusPillTarget.textContent === "Copied") this.setStatus("Done", "ok")
+        if (this.statusPillTarget.textContent.includes("Copied")) this.setStatus("Done", "ok")
       }, 900)
     } catch {
       // fallback
@@ -166,48 +170,6 @@ Support: support@techcorp.com`
   }
 
   // ---------- Rendering helpers ----------
-
-  renderHighlighted(text, spans) {
-    if (!text) {
-      this.highlightTarget.textContent = ""
-      return
-    }
-
-    // Defensive: clamp + sort
-    const safe = spans
-      .map((s) => ({
-        start: Math.max(0, Math.min(text.length, Number(s.start))),
-        end: Math.max(0, Math.min(text.length, Number(s.end))),
-        type: (s.type || "unknown").toString(),
-        placeholder: (s.placeholder || "").toString(),
-        value: (s.value || "").toString(),
-      }))
-      .filter((s) => Number.isFinite(s.start) && Number.isFinite(s.end) && s.end > s.start)
-      .sort((a, b) => a.start - b.start || b.end - a.end)
-
-    // Build HTML with marks
-    let out = ""
-    let cursor = 0
-
-    for (const s of safe) {
-      if (s.start < cursor) continue // skip overlaps (server should already resolve)
-      out += this.escapeHtml(text.slice(cursor, s.start))
-
-      const frag = text.slice(s.start, s.end)
-      const label = s.placeholder || `[${s.type}]`
-      out += `<mark class="pii pii-${this.safeClass(s.type)}" title="${this.escapeAttr(
-        `${s.type} → ${label}`
-      )}">${this.escapeHtml(frag)}</mark>`
-
-      cursor = s.end
-    }
-
-    out += this.escapeHtml(text.slice(cursor))
-    this.highlightTarget.innerHTML = out
-
-    // Keep highlight scroll in sync with textarea after render
-    this.syncHighlightScroll()
-  }
 
   renderFindings(spans) {
     const list = Array.isArray(spans) ? spans : []
@@ -299,23 +261,5 @@ Support: support@techcorp.com`
 
   escapeAttr(str) {
     return this.escapeHtml(str).replaceAll("\n", " ")
-  }
-
-  // Keep the highlight <pre> scrolled in sync with textarea
-  syncHighlightScroll() {
-    const ta = this.inputTarget
-    const pre = this.highlightTarget
-
-    // Ensure identical font/line-height in CSS (below), then sync scrollTop
-    const handler = () => {
-      pre.scrollTop = ta.scrollTop
-      pre.scrollLeft = ta.scrollLeft
-    }
-
-    // Avoid stacking listeners: remove then add
-    ta.removeEventListener("scroll", handler)
-    ta.addEventListener("scroll", handler)
-
-    handler()
   }
 }

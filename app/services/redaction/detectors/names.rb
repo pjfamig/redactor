@@ -12,6 +12,25 @@ module Redaction
           (?![A-Za-z0-9])
         /x
 
+        # Title + single name (e.g. "Mr. Henderson", "Dr. Wong") when no first name given
+        TITLE_LASTNAME = /
+          (?<![A-Za-z0-9])
+          (?:Dr\.|Mr\.|Ms\.|Mrs\.)\s+
+          ([A-Z][a-z]+)
+          (?![A-Za-z0-9])
+        /x
+
+        # Greeting line: "Hi FirstName LastName," or "Hello FirstName LastName,"
+        GREETING_NAME = /
+          (?:^|\n)
+          (?:Hi|Hello|Dear)\s+
+          ([A-Z][a-z]+\s+[A-Z][a-z]+)
+          [,\s]
+        /x
+
+        # Signature line: after "Thanks," / "Regards," etc., the next line is "FirstName LastName"
+        SIGNATURE_NAME = %r{(?:Thanks|Regards|Best|Sincerely|Cheers),?\s*\n\s*([A-Z][a-z]+\s+[A-Z][a-z]+)\s*$}m
+
         # Company names with common suffixes (matches single or multiple capitalized words followed by suffix)
         COMPANY_NAME = /
           (?<![A-Za-z0-9])
@@ -49,7 +68,43 @@ module Redaction
   
         def self.call(text)
           spans = []
-          
+
+          # Detect title + single last name (e.g. "Mr. Henderson", "Dr. Wong")
+          text.to_enum(:scan, TITLE_LASTNAME).each do
+            m = Regexp.last_match
+            spans << {
+              start: m.begin(0),
+              end: m.end(0),
+              type: :name,
+              value: m[0],
+              confidence: 0.55
+            }
+          end
+
+          # Greeting line: "Hi Maria Santos," / "Hello FirstName LastName,"
+          text.to_enum(:scan, GREETING_NAME).each do
+            m = Regexp.last_match
+            spans << {
+              start: m.begin(1),
+              end: m.end(1),
+              type: :name,
+              value: m[1],
+              confidence: 0.55
+            }
+          end
+
+          # Signature line: "Thanks,\nDavid Chen"
+          text.to_enum(:scan, SIGNATURE_NAME).each do
+            m = Regexp.last_match
+            spans << {
+              start: m.begin(1),
+              end: m.end(1),
+              type: :name,
+              value: m[1],
+              confidence: 0.55
+            }
+          end
+
           # Detect person names (First Last) and extend if company suffix follows
           text.to_enum(:scan, PERSON_NAME).each do
             m = Regexp.last_match

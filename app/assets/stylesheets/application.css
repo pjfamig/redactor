@@ -40,11 +40,12 @@ mark.pii-ip          { @apply bg-purple-500/25 text-purple-200 border border-pur
 mark.pii-ssn         { @apply bg-red-500/25 text-red-200 border border-red-500/40; }
 mark.pii-credit_card { @apply bg-orange-500/25 text-orange-200 border border-orange-500/40; }
 mark.pii-address     { @apply bg-yellow-500/25 text-yellow-200 border border-yellow-500/40; }
+mark.pii-name        { @apply bg-cyan-500/25 text-cyan-200 border border-cyan-500/40; }
 mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green-500/40; }
 
 /* Status Pill States */
 [data-redact-target="statusPill"][data-kind="idle"] {
-  @apply border-slate-600 bg-slate-800/50 text-slate-400;
+  @apply border-2 border-slate-400 bg-slate-200 text-slate-700 font-semibold dark:border dark:border-slate-600 dark:bg-slate-800/50 dark:font-medium dark:text-slate-400;
 }
 
 [data-redact-target="statusPill"][data-kind="idle"] span {
@@ -52,7 +53,7 @@ mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green
 }
 
 [data-redact-target="statusPill"][data-kind="busy"] {
-  @apply border-amber-500/50 bg-amber-500/10 text-amber-300;
+  @apply border-amber-500/50 bg-amber-500/10 text-amber-700 dark:text-amber-300;
 }
 
 [data-redact-target="statusPill"][data-kind="busy"] span {
@@ -60,7 +61,7 @@ mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green
 }
 
 [data-redact-target="statusPill"][data-kind="ok"] {
-  @apply border-green-500/50 bg-green-500/10 text-green-300;
+  @apply border-green-500/50 bg-green-500/10 text-green-700 dark:text-green-300;
 }
 
 [data-redact-target="statusPill"][data-kind="ok"] span {
@@ -68,7 +69,7 @@ mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green
 }
 
 [data-redact-target="statusPill"][data-kind="err"] {
-  @apply border-red-500/50 bg-red-500/10 text-red-300;
+  @apply border-red-500/50 bg-red-500/10 text-red-600 dark:text-red-300;
 }
 
 [data-redact-target="statusPill"][data-kind="err"] span {
@@ -77,7 +78,7 @@ mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green
 
 /* Findings Display */
 [data-redact-target="findings"] .empty {
-  @apply text-slate-400 italic;
+  @apply text-slate-600 font-medium italic dark:font-normal dark:text-slate-400;
 }
 
 [data-redact-target="findings"] .finding-groups {
@@ -99,15 +100,16 @@ mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green
 [data-redact-target="findings"] .badge-ssn          { @apply bg-red-500/20 text-red-200 border-red-500/40; }
 [data-redact-target="findings"] .badge-credit_card   { @apply bg-orange-500/20 text-orange-200 border-orange-500/40; }
 [data-redact-target="findings"] .badge-address       { @apply bg-yellow-500/20 text-yellow-200 border-yellow-500/40; }
+[data-redact-target="findings"] .badge-name          { @apply bg-cyan-500/20 text-cyan-200 border-cyan-500/40; }
 [data-redact-target="findings"] .badge-custom        { @apply bg-green-500/20 text-green-200 border-green-500/40; }
-[data-redact-target="findings"] .badge-unknown       { @apply bg-slate-500/20 text-slate-300 border-slate-500/40; }
+[data-redact-target="findings"] .badge-unknown       { @apply bg-slate-500/20 text-slate-700 font-semibold border-slate-500/40 dark:font-normal dark:text-slate-300; }
 
 [data-redact-target="findings"] .count {
-  @apply text-xs font-medium text-slate-300;
+  @apply text-xs font-semibold text-slate-700 dark:font-medium dark:text-slate-300;
 }
 
 [data-redact-target="findings"] .finding-items {
-  @apply space-y-2 border-t border-slate-700 pt-3 mt-3;
+  @apply space-y-2 border-t-2 border-slate-300 pt-3 mt-3 dark:border dark:border-slate-700;
 }
 
 [data-redact-target="findings"] .item {
@@ -115,17 +117,17 @@ mark.pii-custom      { @apply bg-green-500/25 text-green-200 border border-green
 }
 
 [data-redact-target="findings"] .preview {
-  @apply bg-slate-800/50 border border-slate-600 rounded px-1.5 py-0.5 font-mono text-slate-200 text-xs;
+  @apply bg-slate-200 border-2 border-slate-400 rounded px-1.5 py-0.5 font-mono font-medium text-slate-900 text-xs dark:bg-slate-800/50 dark:border dark:border-slate-600 dark:font-normal dark:text-slate-200;
 }
 
 [data-redact-target="findings"] .arrow {
-  @apply text-slate-400;
+  @apply text-slate-600 font-semibold dark:font-normal dark:text-slate-400;
 }
 
 [data-redact-target="findings"] .ph {
-  @apply bg-slate-800/50 border border-slate-600 rounded px-1.5 py-0.5 font-mono text-slate-200 text-xs;
+  @apply bg-slate-200 border-2 border-slate-400 rounded px-1.5 py-0.5 font-mono font-medium text-slate-900 text-xs dark:bg-slate-800/50 dark:border dark:border-slate-600 dark:font-normal dark:text-slate-200;
 }
 
 [data-redact-target="findings"] .more {
-  @apply text-xs text-slate-400 italic pt-2;
+  @apply text-xs font-medium text-slate-600 italic pt-2 dark:font-normal dark:text-slate-400;
 }

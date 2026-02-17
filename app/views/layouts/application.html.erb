@@ -1,6 +1,14 @@
 <!DOCTYPE html>
-<html class="h-full">
+<html class="h-full" lang="en" data-controller="theme">
   <head>
+    <script>
+      (function() {
+        var stored = localStorage.getItem("theme");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (stored === "dark" || (!stored && prefersDark)) document.documentElement.classList.add("dark");
+        else if (stored === "light" || (!stored && !prefersDark)) document.documentElement.classList.remove("dark");
+      })();
+    </script>
     <title><%= content_for(:title) || "Redactor" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -22,8 +30,20 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="h-full bg-slate-950 text-slate-100 antialiased">
-    <div class="min-h-full">
+  <body class="h-full bg-slate-100 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
+    <div class="min-h-full relative max-w-5xl mx-auto">
+      <div class="fixed top-4 right-4 z-10">
+        <button
+          type="button"
+          class="rounded-lg border-2 border-slate-400 bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-800 shadow-sm transition-colors hover:bg-slate-300 dark:border-slate-600 dark:bg-slate-800 dark:font-medium dark:text-slate-200 dark:hover:bg-slate-700"
+          data-action="theme#toggle"
+          aria-label="Toggle light/dark mode"
+          title="Toggle light/dark mode"
+        >
+          <span data-theme-target="lightIcon" aria-hidden="true" title="Switch to light">☀️</span>
+          <span data-theme-target="darkIcon" aria-hidden="true" title="Switch to dark" class="hidden">🌙</span>
+        </button>
+      </div>
       <%= yield %>
     </div>
   </body>
