@@ -1,6 +1,4 @@
-```
-REDACTOR
-```
+# <span style="font-size:3.5rem"><b>REDACTOR</b></span>
 
 **Redact sensitive text before pasting into ChatGPT or other AI. Nothing is stored.**
 
